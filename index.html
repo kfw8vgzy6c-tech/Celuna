@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Celuna Prototyp</title>
+    <meta name="theme-color" content="#f8f0e5" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="assets/celuna-logo.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="phone" aria-label="Celuna App Prototyp">
+        <header class="topbar">
+          <img class="app-logo-mark" src="assets/celuna-logo.png" alt="Celuna" />
+          <div class="brand-title">
+            <p>CELUNA</p>
+            <strong>Heute</strong>
+          </div>
+          <button class="avatar" aria-label="Profil">N</button>
+        </header>
+
+        <nav class="tabs" aria-label="Ansicht wechseln">
+          <button class="tab is-active" data-view="today">Mond</button>
+          <button class="tab" data-view="connect">Treffen</button>
+          <button class="tab" data-view="reflect">Reflexion</button>
+        </nav>
+
+        <section class="view is-active" id="login-view">
+          <section class="login-card">
+            <img src="assets/celuna-logo.png" alt="Celuna Logo" />
+            <p class="eyebrow">Gemeinsam wachsen</p>
+            <h1>Dein Raum für Mut, Nähe und echte Verbindung.</h1>
+            <p>
+              Erstelle dein Profil und finde tägliche Impulse sowie kleine
+              Begegnungen, die zu deinem Leben passen.
+            </p>
+            <form class="auth-form" id="register-form">
+              <label>
+                <span>Name</span>
+                <input name="name" autocomplete="given-name" required />
+              </label>
+              <label>
+                <span>Geburtsdatum</span>
+                <input name="birthdate" type="date" required />
+              </label>
+              <label>
+                <span>Emailadresse</span>
+                <input name="email" type="email" autocomplete="email" required />
+              </label>
+              <label>
+                <span>Passwort</span>
+                <input name="password" type="password" autocomplete="new-password" minlength="8" required />
+              </label>
+              <button class="primary-action" type="submit">Konto erstellen</button>
+            </form>
+            <form class="auth-form login-form" id="login-form" hidden>
+              <label>
+                <span>Emailadresse</span>
+                <input name="email" type="email" autocomplete="email" required />
+              </label>
+              <label>
+                <span>Passwort</span>
+                <input name="password" type="password" autocomplete="current-password" minlength="8" required />
+              </label>
+              <button class="primary-action" type="submit">Einloggen</button>
+            </form>
+            <p class="auth-message" id="auth-message" role="status"></p>
+            <button class="text-action" data-action="toggle-login">Ich habe schon ein Konto</button>
+          </section>
+        </section>
+
+        <section class="view" id="setup-view">
+          <section class="welcome-card">
+            <p class="eyebrow">Fragebogen</p>
+            <h1>Einmal einrichten, dann startet Celuna mit deinem Mond.</h1>
+            <p>
+              Wähle aus, was sich für dich stimmig anfühlt. Daraus entstehen
+              tägliche Impulse, Begegnungsvorschläge und dein Passungsprofil.
+            </p>
+          </section>
+
+          <section class="onboarding-card" aria-labelledby="onboarding-title">
+            <p class="eyebrow">1 von 5</p>
+            <h2 id="onboarding-title">Was möchtest du stärken?</h2>
+            <div class="choice-grid" data-choice-group="goals">
+              <button class="is-chosen">Neue Freundinnen finden</button>
+              <button>Mutiger auftreten</button>
+              <button>Gespräche beginnen</button>
+              <button>Verbindlicher planen</button>
+              <button>Neues ausprobieren</button>
+              <button>Routinen aufbauen</button>
+            </div>
+          </section>
+
+          <section class="onboarding-card" aria-labelledby="pace-title">
+            <p class="eyebrow">2 von 5</p>
+            <h2 id="pace-title">Wie möchtest du Verbindung aufbauen?</h2>
+            <div class="choice-grid" data-choice-group="pace">
+              <button>ganz langsam</button>
+              <button class="is-chosen">in kleinen Schritten</button>
+              <button>spontan & offen</button>
+              <button>mit klarer Vorbereitung</button>
+            </div>
+          </section>
+
+          <section class="onboarding-card" aria-labelledby="meet-title">
+            <p class="eyebrow">3 von 5</p>
+            <h2 id="meet-title">Welche Begegnungen passen zu dir?</h2>
+            <div class="choice-grid" data-choice-group="meetups">
+              <button class="is-chosen">Spaziergang</button>
+              <button>Café</button>
+              <button>Kreativabend</button>
+              <button>Online Journaling</button>
+              <button>Museum</button>
+              <button>ruhige Kleingruppe</button>
+            </div>
+          </section>
+
+          <section class="onboarding-card" aria-labelledby="interest-title">
+            <p class="eyebrow">4 von 5</p>
+            <h2 id="interest-title">Was verbindet dich gern mit anderen?</h2>
+            <div class="choice-grid" data-choice-group="interests">
+              <button>Psychologie</button>
+              <button class="is-chosen">Natur</button>
+              <button>Lesen</button>
+              <button>Musik</button>
+              <button>Kreativität</button>
+              <button>Alltag & Gespräche</button>
+              <button>Bewegung</button>
+              <button>Achtsamkeit</button>
+            </div>
+          </section>
+
+          <section class="onboarding-card" aria-labelledby="support-title">
+            <p class="eyebrow">5 von 5</p>
+            <h2 id="support-title">Was hilft dir beim Dranbleiben?</h2>
+            <div class="choice-grid" data-choice-group="support">
+              <button class="is-chosen">sanfte Erinnerungen</button>
+              <button>klare Tagesziele</button>
+              <button>vorbereitete Nachrichten</button>
+              <button>Gesprächskarten</button>
+              <button>Wochenrückblick</button>
+              <button>kleine Erfolgsmomente</button>
+            </div>
+            <button class="primary-action setup-action" data-action="finish-setup">Fragebogen abschließen</button>
+          </section>
+        </section>
+
+        <section class="view" id="today-view">
+          <section class="daily-dashboard">
+            <div class="dashboard-head">
+              <div>
+                <p class="eyebrow">Tagesmond</p>
+                <h1>Heute ein Stück näher.</h1>
+              </div>
+              <span class="day-pill">Tag 8</span>
+            </div>
+
+            <div class="moon-stage">
+              <div class="moon-meter" aria-label="Tagesmond">
+                <div class="moon-fill" id="moon-fill"></div>
+                <div class="moon-shine"></div>
+                <div class="moon-lines">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="moon-label">
+                  <strong id="moon-percent">33%</strong>
+                  <span>gefüllt</span>
+                </div>
+              </div>
+
+              <div class="daily-note">
+                <span>Fokus</span>
+                <strong>Eine kleine Handlung zählt mehr als perfekte Motivation.</strong>
+              </div>
+            </div>
+
+            <div class="progress-strip" aria-label="Tagesbereiche">
+              <div>
+                <span>Mut</span>
+                <strong>1</strong>
+              </div>
+              <div>
+                <span>Verbindung</span>
+                <strong>1</strong>
+              </div>
+              <div>
+                <span>Ruhe</span>
+                <strong>8 min</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="energy-panel" aria-labelledby="energy-title">
+            <div>
+              <p class="eyebrow">KI Vorschlag</p>
+              <h2 id="energy-title">Wie darf Celuna deinen Tag dosieren?</h2>
+            </div>
+            <div class="energy-options">
+              <button data-energy="low">Sanft</button>
+              <button data-energy="medium">Normal</button>
+              <button data-energy="bold">Mutig</button>
+            </div>
+            <div class="energy-selected" hidden>
+              <span>Heute gewählt</span>
+              <strong id="selected-energy-label">Normal</strong>
+              <button data-action="change-energy">ändern</button>
+            </div>
+          </section>
+
+          <section class="task-list" aria-label="Tagesaufgaben">
+            <article class="task" data-task="courage">
+              <label>
+                <input type="checkbox" />
+                <span></span>
+              </label>
+              <div>
+                <p>Mutkreis</p>
+                <strong id="task-courage">Sag in einer kleinen Situation bewusst, was du bevorzugst.</strong>
+              </div>
+            </article>
+            <article class="task" data-task="connect">
+              <label>
+                <input type="checkbox" />
+                <span></span>
+              </label>
+              <div>
+                <p>Verbindung</p>
+                <strong id="task-connect">Lächle einer Person offen zu oder schreibe eine kurze Nachricht.</strong>
+              </div>
+            </article>
+            <article class="task" data-task="self">
+              <label>
+                <input type="checkbox" />
+                <span></span>
+              </label>
+              <div>
+                <p>Selbstkontakt</p>
+                <strong id="task-self">Wähle 8 Minuten: Atemübung, Journaling oder stille Meditation.</strong>
+              </div>
+            </article>
+          </section>
+
+          <section class="month-overview" aria-label="Monatsübersicht">
+            <div class="month-head">
+              <div>
+                <p class="eyebrow">Monatsmond</p>
+                <h2 id="month-title">Juli</h2>
+              </div>
+              <strong id="month-score">0 Tage</strong>
+            </div>
+            <div class="month-grid" id="month-grid"></div>
+          </section>
+        </section>
+
+        <section class="view" id="connect-view">
+          <section class="connect-hero">
+            <div class="connect-score">
+              <span>83%</span>
+              <strong>Passung</strong>
+            </div>
+            <p class="eyebrow">Dein Kreis diese Woche</p>
+            <h2>3 Frauen, ein ruhiger Ort, ein vorbereiteter Einstieg.</h2>
+            <p>
+              Celuna schlägt nicht endlos Profile vor, sondern kleine Begegnungen
+              mit klarem Rahmen.
+            </p>
+          </section>
+
+          <section class="meetup-detail">
+            <div class="detail-head">
+              <span>Nächstes Format</span>
+              <strong>Freitag</strong>
+            </div>
+            <h2>Spaziergang mit Gesprächskarten</h2>
+            <p>
+              Für Frauen, die Verbindung gern in Bewegung erleben. Start und
+              Route sind vorbereitet, die Gruppe trifft sich eigenständig.
+            </p>
+            <div class="detail-steps">
+              <span>3-4 Frauen</span>
+              <span>45 Minuten</span>
+              <span>öffentlicher Ort</span>
+            </div>
+            <button class="primary-action meetup-open" data-action="open-meetup">Treffen öffnen</button>
+          </section>
+
+          <section class="meetup-room" id="meetup-room" hidden>
+            <div class="room-head">
+              <div>
+                <p class="eyebrow">Treffenraum</p>
+                <h2>Spaziergang mit Gesprächskarten</h2>
+              </div>
+              <span id="room-status">Warten</span>
+            </div>
+
+            <div class="presence-list" aria-label="Teilnehmerinnen">
+              <button class="presence is-here" data-presence="self">
+                <span>N</span>
+                <strong>Du</strong>
+              </button>
+              <button class="presence" data-presence="mara">
+                <span>M</span>
+                <strong>Mara</strong>
+              </button>
+              <button class="presence" data-presence="lea">
+                <span>L</span>
+                <strong>Lea</strong>
+              </button>
+            </div>
+
+            <button class="secondary-action" id="simulate-arrival">Alle sind da</button>
+
+            <div class="card-draw" id="card-draw" hidden>
+              <div class="moon-card-mini" aria-hidden="true">
+                <span></span>
+              </div>
+              <article class="conversation-card" id="conversation-card">
+                <p id="card-type">Ankommen</p>
+                <h3 id="card-text">Legt eure Handys weg und nehmt euch einen ruhigen Startmoment.</h3>
+              </article>
+              <button class="primary-action" id="next-card">Karte ziehen</button>
+            </div>
+          </section>
+
+          <section class="match-reasons" aria-label="Warum dieses Treffen passt">
+            <div>
+              <span></span>
+              <p>ähnliches Verbindungstempo</p>
+            </div>
+            <div>
+              <span></span>
+              <p>Interesse an Natur und ruhigen Gesprächen</p>
+            </div>
+            <div>
+              <span></span>
+              <p>kleine Gruppe statt offenes Event</p>
+            </div>
+          </section>
+
+          <section class="meetup-list" aria-label="Kleine Treffen">
+            <p class="section-label">Weitere passende Kreise</p>
+            <article class="meetup">
+              <div class="meetup-date">
+                <strong>Fr</strong>
+                <span>18:30</span>
+              </div>
+              <div>
+                <h3>Spaziergang mit Gesprächskarten</h3>
+                <p>3 passende Menschen · ruhig · 45 Minuten</p>
+              </div>
+              <button>Details</button>
+            </article>
+            <article class="meetup">
+              <div class="meetup-date">
+                <strong>So</strong>
+                <span>11:00</span>
+              </div>
+              <div>
+                <h3>Café-Kreis am Sonntag</h3>
+                <p>4 passende Menschen · kreativ · 60 Minuten</p>
+              </div>
+              <button>Details</button>
+            </article>
+            <article class="meetup">
+              <div class="meetup-date">
+                <strong>Di</strong>
+                <span>19:15</span>
+              </div>
+              <div>
+                <h3>Online Journaling zu zweit</h3>
+                <p>1 Match · sanfter Einstieg · 25 Minuten</p>
+              </div>
+              <button>Details</button>
+            </article>
+          </section>
+        </section>
+
+        <section class="view" id="reflect-view">
+          <section class="reflection-card">
+            <p class="eyebrow">Abendritual</p>
+            <h2 id="reflection-title">Was hat dich heute ein kleines Stück geöffnet?</h2>
+            <p class="reflection-context" id="reflection-context">Tägliche Frage</p>
+            <textarea id="reflection-text" aria-label="Reflexion" placeholder="Schreib 2 bis 3 Sätze."></textarea>
+            <button class="primary-action" id="save-reflection">Speichern</button>
+            <div class="save-bloom" id="save-bloom" aria-hidden="true">
+              <span></span>
+              <strong>Gespeichert</strong>
+            </div>
+          </section>
+
+          <section class="reflection-summary" aria-label="Reflexionsübersicht">
+            <div>
+              <span>Momente</span>
+              <strong id="reflection-moment-count">0</strong>
+            </div>
+            <div>
+              <span>Streak</span>
+              <strong id="reflection-streak-count">0 Tage</strong>
+            </div>
+          </section>
+
+          <section class="reflection-log" aria-label="Gespeicherte Reflexionen">
+            <p class="eyebrow">Gespeicherte Momente</p>
+            <div id="reflection-log"></div>
+          </section>
+        </section>
+      </section>
+
+      <aside class="notes-panel" aria-label="Produktnotizen">
+        <img class="brand-logo" src="assets/celuna-logo.png" alt="Celuna Logo" />
+        <p class="eyebrow">Prototyp 02</p>
+        <h2>Von täglichen Impulsen zu echter Verbindung.</h2>
+        <p>
+          Celuna richtet sich zuerst an junge Frauen bis etwa 35, die bewusster
+          Verbindung aufbauen möchten: tägliche Mini-Schritte stärken Mut,
+          kuratierte Treffen bringen die Umsetzung in echte Begegnung.
+        </p>
+        <div class="note-grid">
+          <div>
+            <strong>Kernzielgruppe</strong>
+            <span>junge Frauen, die Freundschaft bewusst gestalten wollen</span>
+          </div>
+          <div>
+            <strong>Mehrwert</strong>
+            <span>nicht nur Theorie, sondern vorbereitete Begegnungen</span>
+          </div>
+          <div>
+            <strong>Treffen</strong>
+            <span>kleine Kreise, Ablaufkarten, Check-ins, ortsunabhängig</span>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script src="app.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("service-worker.js");
+      }
+    </script>
+  </body>
+</html>

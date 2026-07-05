@@ -1,0 +1,17 @@
+{
+  "name": "Celuna",
+  "short_name": "Celuna",
+  "description": "Tägliche Impulse und kleine Begegnungen für echte Verbindung.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8f0e5",
+  "theme_color": "#f8f0e5",
+  "icons": [
+    {
+      "src": "assets/celuna-logo.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
