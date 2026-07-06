@@ -166,7 +166,15 @@ const conversationCards = [
 let activeCardIndex = 0;
 const supabaseClient = window.supabase?.createClient(
   window.CELUNA_SUPABASE.url,
-  window.CELUNA_SUPABASE.publishableKey
+  window.CELUNA_SUPABASE.publishableKey,
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+      storageKey: "celuna-auth-session",
+    },
+  }
 );
 
 function formatLocalDate(date) {
@@ -461,6 +469,15 @@ function storeSession(sessionUser) {
   document.querySelector(".avatar").textContent = name.slice(0, 1).toUpperCase();
 }
 
+function restoreStoredUser() {
+  const storedUser = JSON.parse(localStorage.getItem("celunaUser") || "null");
+  if (!storedUser?.name && !storedUser?.email) return false;
+  const name = storedUser.name || storedUser.email || "N";
+  document.querySelector(".avatar").textContent = name.slice(0, 1).toUpperCase();
+  showView(localStorage.getItem("celunaSetupDone") === "true" ? "today" : "setup");
+  return true;
+}
+
 registerForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   authMessage.textContent = "Konto wird erstellt...";
@@ -600,16 +617,25 @@ if (storedEnergy) {
 }
 
 async function initializeAuth() {
-  const { data } = await supabaseClient.auth.getSession();
-  const user = data.session?.user;
-  if (user) {
-    storeSession(user);
-    showView(localStorage.getItem("celunaSetupDone") === "true" ? "today" : "setup");
-    return;
+  try {
+    const { data } = await supabaseClient.auth.getSession();
+    const user = data.session?.user;
+    if (user) {
+      storeSession(user);
+      showView(localStorage.getItem("celunaSetupDone") === "true" ? "today" : "setup");
+      return;
+    }
+  } catch (error) {
+    console.warn("Celuna konnte die Anmeldung gerade nicht prüfen.", error);
   }
 
-  localStorage.removeItem("celunaAuthToken");
+  if (restoreStoredUser()) return;
+
   showView("login");
 }
+
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  if (session?.user) storeSession(session.user);
+});
 
 initializeAuth();
