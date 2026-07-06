@@ -174,6 +174,16 @@ const conversationCards = [
   },
 ];
 let activeCardIndex = 0;
+let activeSessionUser = null;
+let cloudSaveTimer = null;
+let isApplyingCloudState = false;
+const cloudStateKeys = ["celunaSetupDone", "celunaFirstUseDate"];
+const cloudStatePrefixes = [
+  "celunaTasks-",
+  "celunaEnergy-",
+  "celunaReflection-",
+  "celunaStreakMilestone-",
+];
 const supabaseClient = window.supabase?.createClient(
   window.CELUNA_SUPABASE.url,
   window.CELUNA_SUPABASE.publishableKey,
@@ -223,6 +233,75 @@ function updateDayPill() {
   dayPill.textContent = `Tag ${dayNumber}`;
 }
 
+function isCloudStateKey(key) {
+  return cloudStateKeys.includes(key) || cloudStatePrefixes.some((prefix) => key.startsWith(prefix));
+}
+
+function collectCloudState() {
+  const values = {};
+  Object.keys(localStorage)
+    .filter(isCloudStateKey)
+    .forEach((key) => {
+      values[key] = localStorage.getItem(key);
+    });
+  return {
+    values,
+    savedAt: new Date().toISOString(),
+  };
+}
+
+function applyCloudState(cloudState) {
+  const values = cloudState?.values;
+  if (!values || typeof values !== "object") return false;
+  isApplyingCloudState = true;
+  Object.entries(values).forEach(([key, value]) => {
+    if (!isCloudStateKey(key) || value === null || value === undefined) return;
+    localStorage.setItem(key, value);
+  });
+  isApplyingCloudState = false;
+  return true;
+}
+
+function refreshStoredProgress() {
+  updateDayPill();
+  applyReflectionPrompt();
+  renderReflectionLog();
+  const storedEnergy = getSelectedEnergy();
+  if (storedEnergy) {
+    setEnergyMode(storedEnergy, { reset: false, sync: false });
+  } else {
+    showEnergyChoice({ sync: false });
+  }
+}
+
+function scheduleCloudSave() {
+  if (!activeSessionUser || isApplyingCloudState) return;
+  window.clearTimeout(cloudSaveTimer);
+  cloudSaveTimer = window.setTimeout(saveCloudState, 600);
+}
+
+async function saveCloudState() {
+  if (!activeSessionUser) return;
+  const currentMetadata = activeSessionUser.user_metadata || {};
+  const { data, error } = await supabaseClient.auth.updateUser({
+    data: {
+      ...currentMetadata,
+      celuna_state: collectCloudState(),
+    },
+  });
+  if (error) {
+    console.warn("Celuna konnte den Stand gerade nicht sichern.", error);
+    return;
+  }
+  activeSessionUser = data.user;
+}
+
+async function restoreCloudState(sessionUser) {
+  const restored = applyCloudState(sessionUser.user_metadata?.celuna_state);
+  if (restored) refreshStoredProgress();
+  return restored;
+}
+
 function getSelectedEnergy() {
   return localStorage.getItem(energyKey);
 }
@@ -266,13 +345,14 @@ function showView(viewName) {
   headerTitle.textContent = titles[viewName] || "Heute";
 }
 
-function updateMoon() {
+function updateMoon({ sync = true } = {}) {
   const completed = [...taskInputs].filter((input) => input.checked).length;
   const percent = Math.round((completed / taskInputs.length) * 100);
   moonFill.style.height = `${percent}%`;
   moonPercent.textContent = `${percent}%`;
   localStorage.setItem(completionKey, JSON.stringify([...taskInputs].map((input) => input.checked)));
   renderMonthOverview();
+  if (sync) scheduleCloudSave();
 }
 
 function restoreCompletion() {
@@ -282,15 +362,15 @@ function restoreCompletion() {
   });
 }
 
-function clearCompletion() {
+function clearCompletion({ sync = true } = {}) {
   localStorage.removeItem(completionKey);
   taskInputs.forEach((input) => {
     input.checked = false;
   });
-  updateMoon();
+  updateMoon({ sync });
 }
 
-function setEnergyMode(energy, { reset = true } = {}) {
+function setEnergyMode(energy, { reset = true, sync = true } = {}) {
   localStorage.setItem(energyKey, energy);
   document.querySelectorAll("[data-energy]").forEach((button) => {
     button.classList.toggle("is-selected", button.dataset.energy === energy);
@@ -302,21 +382,23 @@ function setEnergyMode(energy, { reset = true } = {}) {
   monthOverview.hidden = false;
   applyDailyTasks(energy);
   if (reset) {
-    clearCompletion();
+    clearCompletion({ sync });
   } else {
     restoreCompletion();
-    updateMoon();
+    updateMoon({ sync });
   }
+  if (sync) scheduleCloudSave();
 }
 
-function showEnergyChoice() {
+function showEnergyChoice({ sync = true } = {}) {
   localStorage.removeItem(energyKey);
   energyOptions.hidden = false;
   selectedEnergyPanel.hidden = true;
   taskList.hidden = true;
   monthOverview.hidden = false;
   document.querySelectorAll("[data-energy]").forEach((button) => button.classList.remove("is-selected"));
-  clearCompletion();
+  clearCompletion({ sync });
+  if (sync) scheduleCloudSave();
 }
 
 function getStoredCompletionForDate(dateKey) {
@@ -434,6 +516,7 @@ document.querySelectorAll("[data-action]").forEach((button) => {
 
     if (button.dataset.action === "finish-setup") {
       localStorage.setItem("celunaSetupDone", "true");
+      scheduleCloudSave();
       showView("today");
     }
 
@@ -480,6 +563,7 @@ nextCardButton.addEventListener("click", () => {
 });
 
 function storeSession(sessionUser) {
+  activeSessionUser = sessionUser;
   const name = sessionUser.user_metadata?.name || sessionUser.email || "N";
   const user = {
     id: sessionUser.id,
@@ -544,9 +628,9 @@ function toggleProfile() {
 
 function clearLocalUser() {
   activeUser = null;
+  activeSessionUser = null;
   localStorage.removeItem("celunaAuthToken");
   localStorage.removeItem("celunaUser");
-  localStorage.removeItem("celunaSetupDone");
   updateProfileView(null);
 }
 
@@ -570,6 +654,7 @@ registerForm.addEventListener("submit", async (event) => {
     if (error) throw error;
     if (data.session?.user) {
       storeSession(data.session.user);
+      await restoreCloudState(data.session.user);
       authMessage.textContent = "";
       showView("setup");
     } else {
@@ -595,9 +680,9 @@ loginForm.addEventListener("submit", async (event) => {
     });
     if (error) throw error;
     storeSession(data.user);
-    localStorage.setItem("celunaSetupDone", "true");
+    await restoreCloudState(data.user);
     authMessage.textContent = "";
-    showView("today");
+    showView(localStorage.getItem("celunaSetupDone") === "true" ? "today" : "setup");
   } catch (error) {
     authMessage.textContent = getFriendlyAuthError(error);
   }
@@ -681,6 +766,7 @@ saveReflectionButton.addEventListener("click", () => {
       savedAt: new Date().toISOString(),
     })
   );
+  scheduleCloudSave();
   reflectionText.value = "";
   renderReflectionLog();
   const streak = calculateReflectionStreak(getReflectionEntries());
@@ -708,6 +794,7 @@ async function initializeAuth() {
     const user = data.session?.user;
     if (user) {
       storeSession(user);
+      await restoreCloudState(user);
       showView(localStorage.getItem("celunaSetupDone") === "true" ? "today" : "setup");
       return;
     }
@@ -721,7 +808,10 @@ async function initializeAuth() {
 }
 
 supabaseClient.auth.onAuthStateChange((event, session) => {
-  if (session?.user) storeSession(session.user);
+  if (session?.user) {
+    storeSession(session.user);
+    restoreCloudState(session.user);
+  }
   if (event === "SIGNED_OUT") clearLocalUser();
 });
 
