@@ -110,6 +110,7 @@ const views = {
 };
 const moonFill = document.querySelector("#moon-fill");
 const moonPercent = document.querySelector("#moon-percent");
+const dayPill = document.querySelector("#day-pill");
 const taskInputs = document.querySelectorAll(".task input");
 const headerTitle = document.querySelector(".brand-title strong");
 const reflectionTitle = document.querySelector("#reflection-title");
@@ -206,6 +207,20 @@ const energyLabels = {
 
 function dailyPick(items, offset = 0) {
   return items[(dayIndex + offset) % items.length];
+}
+
+function ensureFirstUseDate() {
+  const storedDate = localStorage.getItem("celunaFirstUseDate");
+  if (storedDate) return storedDate;
+  localStorage.setItem("celunaFirstUseDate", todayKey);
+  return todayKey;
+}
+
+function updateDayPill() {
+  const firstUseDate = parseLocalDate(ensureFirstUseDate());
+  const today = parseLocalDate(todayKey);
+  const dayNumber = Math.max(1, Math.floor((today - firstUseDate) / 86400000) + 1);
+  dayPill.textContent = `Tag ${dayNumber}`;
 }
 
 function getSelectedEnergy() {
@@ -678,6 +693,7 @@ saveReflectionButton.addEventListener("click", () => {
   }
 });
 applyReflectionPrompt();
+updateDayPill();
 renderReflectionLog();
 const storedEnergy = getSelectedEnergy();
 if (storedEnergy) {
