@@ -1,3 +1,4 @@
-*.png
 *.sqlite3
 server.py
+celuna-*.png
+prototype-*.png
