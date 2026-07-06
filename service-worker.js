@@ -1,4 +1,4 @@
-const CACHE_NAME = "celuna-prototype-v3";
+const CACHE_NAME = "celuna-prototype-v4";
 const ASSETS = [
   "/",
   "/index.html",
@@ -6,7 +6,11 @@ const ASSETS = [
   "/app.js",
   "/supabase-config.js",
   "/manifest.webmanifest",
-  "/assets/celuna-logo.png"
+  "/assets/celuna-logo.png",
+  "/assets/apple-touch-icon.png",
+  "/assets/icon-192.png",
+  "/assets/icon-512.png",
+  "/assets/celuna-app-icon.png"
 ];
 
 self.addEventListener("install", (event) => {
