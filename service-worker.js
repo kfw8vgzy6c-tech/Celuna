@@ -1,4 +1,4 @@
-const CACHE_NAME = "celuna-prototype-v5";
+const CACHE_NAME = "celuna-prototype-v6";
 const ASSETS = [
   "/",
   "/index.html",

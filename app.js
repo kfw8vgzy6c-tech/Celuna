@@ -127,6 +127,14 @@ const registerForm = document.querySelector("#register-form");
 const loginForm = document.querySelector("#login-form");
 const authMessage = document.querySelector("#auth-message");
 const authToggle = document.querySelector("[data-action=toggle-login]");
+const avatarButton = document.querySelector(".avatar");
+const profilePopover = document.querySelector("#profile-popover");
+const profileInitial = document.querySelector("#profile-initial");
+const profileName = document.querySelector("#profile-name");
+const profileEmail = document.querySelector("#profile-email");
+const profileBirthdate = document.querySelector("#profile-birthdate");
+const profileClose = document.querySelector("#profile-close");
+const logoutButton = document.querySelector("#logout-button");
 const saveReflectionButton = document.querySelector("#save-reflection");
 const saveBloom = document.querySelector("#save-bloom");
 const reflectionLog = document.querySelector("#reflection-log");
@@ -140,6 +148,7 @@ const conversationCard = document.querySelector("#conversation-card");
 const cardType = document.querySelector("#card-type");
 const cardText = document.querySelector("#card-text");
 const nextCardButton = document.querySelector("#next-card");
+let activeUser = null;
 
 const conversationCards = [
   {
@@ -231,6 +240,7 @@ function showView(viewName) {
   tabs.forEach((item) => item.classList.toggle("is-active", item.dataset.view === viewName));
   Object.entries(views).forEach(([name, view]) => view.classList.toggle("is-active", name === viewName));
   document.body.classList.toggle("is-auth-flow", viewName === "login" || viewName === "setup");
+  if (viewName === "login") closeProfile();
   const titles = {
     login: "Anmeldung",
     setup: "Fragebogen",
@@ -456,26 +466,73 @@ nextCardButton.addEventListener("click", () => {
 
 function storeSession(sessionUser) {
   const name = sessionUser.user_metadata?.name || sessionUser.email || "N";
+  const user = {
+    id: sessionUser.id,
+    name,
+    email: sessionUser.email,
+    birthdate: sessionUser.user_metadata?.birthdate || "",
+  };
+  activeUser = user;
   localStorage.setItem("celunaAuthToken", "supabase");
-  localStorage.setItem(
-    "celunaUser",
-    JSON.stringify({
-      id: sessionUser.id,
-      name,
-      email: sessionUser.email,
-      birthdate: sessionUser.user_metadata?.birthdate || "",
-    })
-  );
-  document.querySelector(".avatar").textContent = name.slice(0, 1).toUpperCase();
+  localStorage.setItem("celunaUser", JSON.stringify(user));
+  updateProfileView(user);
 }
 
 function restoreStoredUser() {
   const storedUser = JSON.parse(localStorage.getItem("celunaUser") || "null");
   if (!storedUser?.name && !storedUser?.email) return false;
-  const name = storedUser.name || storedUser.email || "N";
-  document.querySelector(".avatar").textContent = name.slice(0, 1).toUpperCase();
+  activeUser = storedUser;
+  updateProfileView(storedUser);
   showView(localStorage.getItem("celunaSetupDone") === "true" ? "today" : "setup");
   return true;
+}
+
+function getInitial(user = activeUser) {
+  const source = user?.name || user?.email || "";
+  return source.trim().slice(0, 1).toUpperCase() || "C";
+}
+
+function formatBirthdate(value) {
+  if (!value) return "Noch nicht hinterlegt";
+  const date = new Date(`${value}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat("de-DE").format(date);
+}
+
+function updateProfileView(user = activeUser) {
+  if (!user) {
+    avatarButton.hidden = true;
+    closeProfile();
+    return;
+  }
+
+  const initial = getInitial(user);
+  avatarButton.hidden = false;
+  avatarButton.textContent = initial;
+  profileInitial.textContent = initial;
+  profileName.textContent = user.name || "Celuna Nutzerin";
+  profileEmail.textContent = user.email || "Noch nicht hinterlegt";
+  profileBirthdate.textContent = formatBirthdate(user.birthdate);
+}
+
+function closeProfile() {
+  profilePopover.hidden = true;
+  avatarButton.setAttribute("aria-expanded", "false");
+}
+
+function toggleProfile() {
+  if (!activeUser) return;
+  const shouldOpen = profilePopover.hidden;
+  profilePopover.hidden = !shouldOpen;
+  avatarButton.setAttribute("aria-expanded", String(shouldOpen));
+}
+
+function clearLocalUser() {
+  activeUser = null;
+  localStorage.removeItem("celunaAuthToken");
+  localStorage.removeItem("celunaUser");
+  localStorage.removeItem("celunaSetupDone");
+  updateProfileView(null);
 }
 
 registerForm.addEventListener("submit", async (event) => {
@@ -560,6 +617,19 @@ authToggle.addEventListener("click", () => {
   authMessage.textContent = "";
 });
 
+avatarButton.addEventListener("click", toggleProfile);
+profileClose.addEventListener("click", closeProfile);
+logoutButton.addEventListener("click", async () => {
+  logoutButton.textContent = "Abmelden...";
+  try {
+    await supabaseClient.auth.signOut();
+  } finally {
+    logoutButton.textContent = "Abmelden";
+    clearLocalUser();
+    showView("login");
+  }
+});
+
 document.querySelectorAll(".choice-grid button").forEach((button) => {
   button.addEventListener("click", () => {
     button.classList.toggle("is-chosen");
@@ -636,6 +706,7 @@ async function initializeAuth() {
 
 supabaseClient.auth.onAuthStateChange((event, session) => {
   if (session?.user) storeSession(session.user);
+  if (event === "SIGNED_OUT") clearLocalUser();
 });
 
 initializeAuth();

@@ -19,8 +19,28 @@
             <p>CELUNA</p>
             <strong>Heute</strong>
           </div>
-          <button class="avatar" aria-label="Profil">N</button>
+          <button class="avatar" aria-label="Profil öffnen" aria-expanded="false" hidden></button>
         </header>
+
+        <section class="profile-popover" id="profile-popover" hidden>
+          <div class="profile-popover-head">
+            <span class="profile-initial" id="profile-initial">C</span>
+            <div>
+              <p class="eyebrow">Profil</p>
+              <h2 id="profile-name">Celuna</h2>
+            </div>
+          </div>
+          <div class="profile-field">
+            <span>Emailadresse</span>
+            <strong id="profile-email">-</strong>
+          </div>
+          <div class="profile-field">
+            <span>Geburtsdatum</span>
+            <strong id="profile-birthdate">-</strong>
+          </div>
+          <button class="secondary-action" id="profile-close">Schließen</button>
+          <button class="text-action danger-action" id="logout-button">Abmelden</button>
+        </section>
 
         <nav class="tabs" aria-label="Ansicht wechseln">
           <button class="tab is-active" data-view="today">Mond</button>
