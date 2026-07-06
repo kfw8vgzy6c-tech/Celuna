@@ -1,4 +1,4 @@
-const CACHE_NAME = "celuna-prototype-v9";
+const CACHE_NAME = "celuna-prototype-v10";
 const ASSETS = [
   "/",
   "/index.html",
@@ -14,7 +14,11 @@ const ASSETS = [
   "/assets/apple-touch-icon-v9.png",
   "/assets/icon-192-v9.png",
   "/assets/icon-512-v9.png",
-  "/assets/celuna-app-icon-v9.png"
+  "/assets/celuna-app-icon-v9.png",
+  "/assets/apple-touch-icon-v10.png",
+  "/assets/icon-192-v10.png",
+  "/assets/icon-512-v10.png",
+  "/assets/celuna-app-icon-v10.png"
 ];
 
 self.addEventListener("install", (event) => {
