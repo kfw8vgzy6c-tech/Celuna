@@ -1430,6 +1430,11 @@ button {
   line-height: 1.38;
 }
 
+.reflection-log article .reflection-question {
+  color: var(--ink);
+  font-weight: 850;
+}
+
 .week-strip div {
   display: grid;
   grid-template-rows: 86px auto;

@@ -5,75 +5,87 @@ const palettes = {
 };
 
 const taskSets = {
-  low: {
-    courage: [
-      "Sag heute einmal innerlich Ja zu dir, bevor du automatisch zustimmst.",
-      "Wähle bei einer kleinen Entscheidung bewusst das, was dir guttut.",
-      "Nimm dir 30 Sekunden, bevor du antwortest, und spüre erst kurz nach.",
-      "Formuliere einen Wunsch nur für dich, ohne ihn sofort zu relativieren.",
-      "Lass eine kleine Unvollkommenheit stehen und mach trotzdem weiter.",
-    ],
-    connect: [
-      "Schick einer vertrauten Person ein ehrliches kleines Lebenszeichen.",
-      "Reagiere auf eine Nachricht mit einem Satz mehr als sonst.",
-      "Teile heute eine kleine schöne Beobachtung mit jemandem.",
-      "Frag eine Person, wie ihr Tag wirklich war.",
-      "Speichere dir eine Person, bei der du dich diese Woche melden möchtest.",
-    ],
-    self: [
-      "Wähle 5 Minuten: ruhiges Atmen, Tee ohne Handy oder drei Journal-Sätze.",
-      "Schreib drei Worte auf, die deinen heutigen inneren Zustand beschreiben.",
-      "Leg dein Handy 5 Minuten weg und komm bei dir an.",
-      "Mach eine kurze Körperreise von den Schultern bis zu den Füßen.",
-      "Notiere einen Gedanken, den du heute liebevoller formulieren könntest.",
-    ],
-  },
-  medium: {
-    courage: [
-      "Sag in einer kleinen Situation bewusst, was du bevorzugst.",
-      "Sprich heute einen Gedanken aus, den du sonst eher zurückhältst.",
-      "Setz eine kleine Grenze freundlich und klar.",
-      "Mach etwas allein, das du gern tun würdest.",
-      "Zeig dich in einer Nachricht etwas persönlicher als sonst.",
-    ],
-    connect: [
-      "Lächle einer Person offen zu oder schreibe eine kurze Nachricht.",
-      "Frag jemanden nach einem kleinen gemeinsamen Moment in den nächsten Tagen.",
-      "Mach ein ehrliches Kompliment, das nicht nur oberflächlich ist.",
-      "Schreib einer Person, an die du heute gedacht hast.",
-      "Stell in einem Gespräch eine Frage, die echte Nähe erlaubt.",
-    ],
-    self: [
-      "Wähle 8 Minuten: Atemübung, Journaling oder stille Meditation.",
-      "Schreib auf, was heute Energie gegeben und was Energie genommen hat.",
-      "Mach 8 Minuten etwas Langsames nur für dich.",
-      "Notiere drei Bedürfnisse, die heute leise da waren.",
-      "Geh kurz nach draußen und beobachte bewusst Licht, Luft oder Geräusche.",
-    ],
-  },
-  bold: {
-    courage: [
-      "Bitte heute einmal klar um etwas, das dir wichtig ist.",
-      "Sag freundlich Nein zu etwas, das gerade nicht zu dir passt.",
-      "Starte ein Gespräch, statt auf den perfekten Moment zu warten.",
-      "Mach einen Vorschlag, ohne ihn sofort kleinzureden.",
-      "Teile eine ehrliche Meinung und lass sie stehen.",
-    ],
-    connect: [
-      "Frag eine Person nach einem konkreten Treffen in den nächsten Tagen.",
-      "Schick eine Sprachnachricht statt nur kurz zu tippen.",
-      "Lade jemanden zu einem Spaziergang oder Kaffee ein.",
-      "Schlag ein kleines gemeinsames Ritual vor.",
-      "Melde dich bei jemandem, mit dem du gern wieder mehr Kontakt hättest.",
-    ],
-    self: [
-      "Schreib 12 Minuten ehrlich auf: Was wünsche ich mir gerade wirklich?",
-      "Mach 12 Minuten Handy-Pause und notiere danach deinen nächsten kleinen Schritt.",
-      "Setz dich 12 Minuten ruhig hin und bleib freundlich bei allem, was auftaucht.",
-      "Schreib einen liebevollen Satz an dich selbst und lies ihn dir laut vor.",
-      "Sortiere 12 Minuten einen kleinen Bereich, der dich morgen unterstützen soll.",
-    ],
-  },
+  low: [
+    {
+      courage: "Geh 5 Minuten allein nach draußen und nimm wahr: Was tut dir gerade gut?",
+      connect: "Überlege danach: Welche Person vermisst du gerade ein kleines bisschen?",
+      self: "Schreib dieser Person einen ersten Satz als Entwurf. Du musst ihn heute nicht abschicken.",
+    },
+    {
+      courage: "Bestell oder kaufe heute etwas bewusst mit ruhiger Stimme, ohne dich zu beeilen.",
+      connect: "Wenn es passt, ergänze ein freundliches Danke mit Blickkontakt.",
+      self: "Notiere danach: Was war leichter als erwartet?",
+    },
+    {
+      courage: "Setz dich 5 Minuten an einen öffentlichen Ort oder ans Fenster und bleib bewusst da.",
+      connect: "Nimm eine Person wahr, ohne dich zu vergleichen: Was wirkt sympathisch oder menschlich?",
+      self: "Schreib einen Satz: Womit darfst du heute genauso da sein, wie du bist?",
+    },
+    {
+      courage: "Wähle heute bei einer kleinen Sache klar, was du möchtest.",
+      connect: "Teile diese Wahl in einem Satz mit, wenn jemand beteiligt ist.",
+      self: "Notiere am Abend: Wo hast du dich selbst ernst genommen?",
+    },
+    {
+      courage: "Mach eine kleine Sache allein, die du sonst aufschiebst.",
+      connect: "Überlege danach, wem du davon erzählen würdest, wenn du dich sicher fühlst.",
+      self: "Schreib dieser Person einen neutralen Einstieg: 'Ich musste gerade an dich denken ...'",
+    },
+  ],
+  medium: [
+    {
+      courage: "Geh allein spazieren und wähle bewusst eine kleine neue Route.",
+      connect: "Schreib danach einer Person, bei der du dich länger nicht gemeldet hast, einen konkreten kurzen Satz.",
+      self: "Notiere: Was hat dich an diesem Kontakt gereizt oder zurückgehalten?",
+    },
+    {
+      courage: "Mach heute einer Person ein ehrliches, kleines Kompliment.",
+      connect: "Achte auf ihre Reaktion, ohne sie bewerten zu müssen.",
+      self: "Schreib danach: Wie hat es sich angefühlt, freundlich sichtbar zu sein?",
+    },
+    {
+      courage: "Geh allein in ein Café, einen Laden oder an einen anderen kleinen Alltagsort.",
+      connect: "Sag dort mindestens einen vollständigen freundlichen Satz zu einer fremden Person.",
+      self: "Notiere danach drei einfache Worte für dein Gefühl, z.B. ruhig, stolz, unsicher.",
+    },
+    {
+      courage: "Such einen Kurs, ein Treffen oder eine Gruppe heraus, die dich interessiert.",
+      connect: "Speichere nicht nur den Link: Schreib auf, welche erste Frage du dazu hättest.",
+      self: "Entscheide einen nächsten Mini-Schritt: ansehen, anfragen oder Termin vormerken.",
+    },
+    {
+      courage: "Sprich heute eine kleine Vorliebe aus, statt dich automatisch anzupassen.",
+      connect: "Frag die andere Person danach auch nach ihrer echten Vorliebe.",
+      self: "Notiere: Wo entstand dadurch mehr Klarheit?",
+    },
+  ],
+  bold: [
+    {
+      courage: "Melde dich heute verbindlich für einen Kurs, ein Treffen oder eine Aktivität an.",
+      connect: "Schreib dir vorher eine sichere Ausstiegsoption auf, falls du nervös wirst.",
+      self: "Notiere danach: Worauf kannst du stolz sein, unabhängig vom Ergebnis?",
+    },
+    {
+      courage: "Frag eine Person konkret nach einem Spaziergang, Kaffee oder Telefonat in den nächsten Tagen.",
+      connect: "Mach direkt zwei einfache Terminvorschläge.",
+      self: "Schreib danach auf: Was war mutiger - die Frage oder das Warten auf Antwort?",
+    },
+    {
+      courage: "Sprich in einem Laden, Kurs oder Wartebereich eine Person mit einer einfachen Frage an.",
+      connect: "Bleib bei einem kurzen Gesprächsmoment, wenn er entsteht.",
+      self: "Notiere: Was hast du über dich gelernt, während du dich gezeigt hast?",
+    },
+    {
+      courage: "Sag heute freundlich Nein oder 'ich brauche kurz Zeit', wenn etwas nicht passt.",
+      connect: "Biete, falls sinnvoll, eine klare Alternative an.",
+      self: "Schreib danach: Welche Grenze hat deine Verbindung zu dir geschützt?",
+    },
+    {
+      courage: "Starte ein Gespräch, das du schon länger verschiebst.",
+      connect: "Beginne mit einem klaren Ich-Satz statt mit einer langen Erklärung.",
+      self: "Notiere danach: Was ist jetzt ehrlicher als vorher?",
+    },
+  ],
 };
 
 const reflectionSets = {
@@ -308,10 +320,10 @@ function getSelectedEnergy() {
 
 function applyDailyTasks(energy = getSelectedEnergy()) {
   if (!energy) return;
-  const tasks = taskSets[energy];
-  document.querySelector("#task-courage").textContent = dailyPick(tasks.courage, 0);
-  document.querySelector("#task-connect").textContent = dailyPick(tasks.connect, 2);
-  document.querySelector("#task-self").textContent = dailyPick(tasks.self, 4);
+  const tasks = dailyPick(taskSets[energy]);
+  document.querySelector("#task-courage").textContent = tasks.courage;
+  document.querySelector("#task-connect").textContent = tasks.connect;
+  document.querySelector("#task-self").textContent = tasks.self;
 }
 
 function applyReflectionPrompt() {
@@ -489,7 +501,12 @@ function renderReflectionLog() {
   }
   entries.slice(0, 3).forEach((entry) => {
     const item = document.createElement("article");
-    item.innerHTML = `<span>${entry.date}</span><strong>${entry.context}</strong><p>${entry.text}</p>`;
+    item.innerHTML = `
+      <span>${entry.date}</span>
+      <strong>${entry.context}</strong>
+      <p class="reflection-question">${entry.question || entry.context}</p>
+      <p>${entry.text}</p>
+    `;
     reflectionLog.appendChild(item);
   });
 }
